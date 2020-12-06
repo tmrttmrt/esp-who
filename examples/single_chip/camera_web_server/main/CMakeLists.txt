@@ -1,4 +1,4 @@
-set(COMPONENT_SRCS "app_main.c" "app_wifi.c" "app_camera.c" "app_httpd.c" "app_mdns.c" "app_otau.c")
+set(COMPONENT_SRCS "app_main.c" "app_wifi.c" "app_camera.c" "app_httpd.c" "app_mdns.c" "app_otau.c" "app_wifi_manager.c")
 set(COMPONENT_ADD_INCLUDEDIRS "include")
 
 set(COMPONENT_REQUIRES
@@ -8,6 +8,7 @@ set(COMPONENT_REQUIRES
     esp_http_server
     fb_gfx
     mdns
+    esp32-wifi-manager
     )
 
 set(COMPONENT_EMBED_FILES

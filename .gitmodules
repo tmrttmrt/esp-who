@@ -7,6 +7,9 @@
 [submodule "components/esp32-camera"]
 	path = components/esp32-camera
 	url = https://github.com/espressif/esp32-camera.git
-[submodule "components/ota_server"]
-	path = components/ota_server
-url=https://github.com/tmrttmrt/esp32-ota-server.git
+[submodule "components/esp32-ota-server"]
+	path = components/esp32-ota-server
+	url = https://github.com/tmrttmrt/esp32-ota-server.git
+[submodule "components/esp32-wifi-manager"]
+	path = components/esp32-wifi-manager
+	url = https://github.com/tonyp7/esp32-wifi-manager.git

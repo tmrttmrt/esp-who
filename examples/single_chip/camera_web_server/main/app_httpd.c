@@ -76,6 +76,8 @@ static const char *_STREAM_PART = "Content-Type: image/jpeg\r\nContent-Length: %
 httpd_handle_t stream_httpd = NULL;
 httpd_handle_t camera_httpd = NULL;
 
+static httpd_uri_t httpd_get_handlers[16];
+
 #if CONFIG_ESP_FACE_DETECT_ENABLED
 
 static int8_t detection_enabled = 0;
@@ -1115,89 +1117,114 @@ static esp_err_t monitor_handler(httpd_req_t *req)
     return httpd_resp_send(req, (const char *)monitor_html_gz_start, monitor_html_gz_len);
 }
 
+esp_err_t camera_handler(httpd_req_t *req){
+    
+    for (httpd_uri_t *p = httpd_get_handlers; p->handler != 0; p++) {
+        if(strcmp(req->uri, p->uri) == 0){
+            return p->handler(req);
+        }
+    }
+    httpd_resp_send_404(req);
+    return ESP_FAIL;
+}
+
 void app_httpd_main()
 {
     httpd_config_t config = HTTPD_DEFAULT_CONFIG();
     config.max_uri_handlers = 16;
-
+    int i=0;
     httpd_uri_t index_uri = {
         .uri = "/",
         .method = HTTP_GET,
         .handler = index_handler,
         .user_ctx = NULL};
+    memcpy(httpd_get_handlers + i++,&index_uri,sizeof(httpd_uri_t));
 
     httpd_uri_t status_uri = {
         .uri = "/status",
         .method = HTTP_GET,
         .handler = status_handler,
         .user_ctx = NULL};
+    memcpy(httpd_get_handlers + i++,&status_uri,sizeof(httpd_uri_t));
 
     httpd_uri_t cmd_uri = {
         .uri = "/control",
         .method = HTTP_GET,
         .handler = cmd_handler,
         .user_ctx = NULL};
+    memcpy(httpd_get_handlers + i++,&cmd_uri,sizeof(httpd_uri_t));
 
     httpd_uri_t capture_uri = {
         .uri = "/capture",
         .method = HTTP_GET,
         .handler = capture_handler,
         .user_ctx = NULL};
+    memcpy(httpd_get_handlers + i++,&capture_uri,sizeof(httpd_uri_t));
 
     httpd_uri_t stream_uri = {
         .uri = "/stream",
         .method = HTTP_GET,
         .handler = stream_handler,
         .user_ctx = NULL};
+    memcpy(httpd_get_handlers + i++,&stream_uri,sizeof(httpd_uri_t));
 
     httpd_uri_t bmp_uri = {
         .uri = "/bmp",
         .method = HTTP_GET,
         .handler = bmp_handler,
         .user_ctx = NULL};
-
+    memcpy(httpd_get_handlers + i++,&bmp_uri,sizeof(httpd_uri_t));
+    
     httpd_uri_t xclk_uri = {
         .uri = "/xclk",
         .method = HTTP_GET,
         .handler = xclk_handler,
         .user_ctx = NULL};
+    memcpy(httpd_get_handlers + i++,&xclk_uri,sizeof(httpd_uri_t));
 
     httpd_uri_t reg_uri = {
         .uri = "/reg",
         .method = HTTP_GET,
         .handler = reg_handler,
         .user_ctx = NULL};
+    memcpy(httpd_get_handlers + i++,&reg_uri,sizeof(httpd_uri_t));
 
     httpd_uri_t greg_uri = {
         .uri = "/greg",
         .method = HTTP_GET,
         .handler = greg_handler,
         .user_ctx = NULL};
+    memcpy(httpd_get_handlers + i++,&greg_uri,sizeof(httpd_uri_t));
 
     httpd_uri_t pll_uri = {
         .uri = "/pll",
         .method = HTTP_GET,
         .handler = pll_handler,
         .user_ctx = NULL};
+    memcpy(httpd_get_handlers + i++,&pll_uri,sizeof(httpd_uri_t));
 
     httpd_uri_t win_uri = {
         .uri = "/resolution",
         .method = HTTP_GET,
         .handler = win_handler,
         .user_ctx = NULL};
+    memcpy(httpd_get_handlers + i++,&win_uri,sizeof(httpd_uri_t));
 
     httpd_uri_t mdns_uri = {
         .uri = "/mdns",
         .method = HTTP_GET,
         .handler = mdns_handler,
         .user_ctx = NULL};
+    memcpy(httpd_get_handlers + i++,&mdns_uri,sizeof(httpd_uri_t));
 
     httpd_uri_t monitor_uri = {
         .uri = "/monitor",
         .method = HTTP_GET,
         .handler = monitor_handler,
         .user_ctx = NULL};
-
+    memcpy(httpd_get_handlers + i++,&monitor_uri,sizeof(httpd_uri_t));
+    httpd_get_handlers[i].handler = NULL;
+    
     ra_filter_init(&ra_filter, 20);
 
 #if CONFIG_ESP_FACE_DETECT_ENABLED
@@ -1221,6 +1248,7 @@ void app_httpd_main()
 #endif
 
 #endif
+#if 0
     ESP_LOGI(TAG, "Starting web server on port: '%d'", config.server_port);
     if (httpd_start(&camera_httpd, &config) == ESP_OK)
     {
@@ -1239,7 +1267,8 @@ void app_httpd_main()
         httpd_register_uri_handler(camera_httpd, &mdns_uri);
         httpd_register_uri_handler(camera_httpd, &monitor_uri);
     }
-
+#else
+#endif
     config.server_port += 1;
     config.ctrl_port += 1;
     ESP_LOGI(TAG, "Starting stream server on port: '%d'", config.server_port);

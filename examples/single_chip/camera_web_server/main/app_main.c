@@ -21,14 +21,14 @@
  */
 
 #include "app_camera.h"
-#include "app_wifi.h"
+#include "app_wifi_manager.h"
 #include "app_otau.h"
 #include "app_httpd.h"
 #include "app_mdns.h"
 
 void app_main()
 {
-    app_wifi_main();
+    app_wifi_manager_main();
     app_otau_main();
     app_camera_main();
     app_httpd_main();
