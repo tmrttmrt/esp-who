@@ -21,14 +21,14 @@
   * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   *
   */
-#ifndef _APP_WIFI_H_
-#define _APP_WIFI_H_
+#ifndef _APP_WIFI_MANAGER_H_
+#define _APP_WIFI_MANAGER_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void app_wifi_main();
+void app_wifi_manager_main();
 
 #ifdef __cplusplus
 }

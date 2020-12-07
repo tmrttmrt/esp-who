@@ -2,7 +2,7 @@
 
 static void ota_server_task(void * param)
 {
-//    xEventGroupWaitBits(wifi_event_group, CONNECTED_BIT, false, true, portMAX_DELAY);
+    xEventGroupWaitBits(wifi_event_group, CONNECTED_BIT, false, true, portMAX_DELAY);
     ota_server_start();
     vTaskDelete(NULL);
 }

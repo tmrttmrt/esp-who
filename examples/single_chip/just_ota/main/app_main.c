@@ -20,11 +20,11 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "app_wifi.h"
+#include "app_wifi_manager.h"
 #include "app_otau.h"
 
 void app_main()
 {
-    app_wifi_main();
+    app_wifi_manager_main();
     app_otau_main();
 }

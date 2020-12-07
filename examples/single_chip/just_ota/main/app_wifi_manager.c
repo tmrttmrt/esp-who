@@ -35,17 +35,15 @@ SOFTWARE.
 #include "esp_log.h"
 
 #include "wifi_manager.h"
-#include "http_app.h"
 #include "app_otau.h"
 
-extern esp_err_t camera_handler(httpd_req_t *req);
 
 /* @brief tag used for ESP serial console messages */
 static const char TAG[] = "app_wifi_manager";
 EventGroupHandle_t wifi_event_group;
 
 void cb_connection_ok(void *pvParameter){
-	ESP_LOGI(TAG, "I have a connection!");
+	ESP_LOGI(TAG, "We have a connection!");
     xEventGroupSetBits(wifi_event_group, CONNECTED_BIT);
 }
 
@@ -58,12 +56,12 @@ void app_wifi_manager_main()
         return;
     }
     
-    http_app_set_handler_hook(HTTP_GET, &camera_handler);
 
 	/* start the wifi manager */
 	wifi_manager_start();
     wifi_manager_set_callback(WM_EVENT_STA_GOT_IP, &cb_connection_ok);
     wifi_manager_set_callback(WM_EVENT_AP_START, &cb_connection_ok);
+
 	/* set custom handler for the http server
 	 * Now navigate to /helloworld to see the custom page
 	 * */

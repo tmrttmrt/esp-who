@@ -12,7 +12,8 @@ PROJECT_NAME := OTAU_server
 
 SOLUTION_PATH ?= $(abspath $(shell pwd))/../../..
 
-EXTRA_COMPONENT_DIRS += $(SOLUTION_PATH)/components/ota_server
+EXTRA_COMPONENT_DIRS += $(SOLUTION_PATH)/components/esp32-ota-server
+EXTRA_COMPONENT_DIRS += $(SOLUTION_PATH)/components/esp32-wifi-manager
 include $(IDF_PATH)/make/project.mk
 
 ota: app
